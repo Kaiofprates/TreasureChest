@@ -2,26 +2,37 @@ import React, { useEffect } from 'react';
 import {
   SafeAreaView,
   StyleSheet,
-  Button,
+  Image,
+  View
 } from 'react-native';
 
-import Lottie from 'lottie-react-native';
-import leprechaun from '../../assets/leprechaun.json';
-
+//import Lottie from 'lottie-react-native';
+import leprechaun from '../../assets/leprechaun.gif'
+//import leprechaun from '../../assets/leprechaun.json'
 export default function Intro({ navigation }) {
+
+
+useEffect(()=>{
 
   setInterval(()=>{
     navigation.navigate('Home')
   }, 4000)
 
+
+},[]);
+
+
+  
+
   return(
     <SafeAreaView style={styles.container}>
-      <Lottie
+      {/* <Lottie
         source={leprechaun}
         style={styles.anim}
         autoPlay
         resizeMode="contain"
-      />
+      /> */}
+      <Image source={leprechaun}  style={styles.anim}/>
     </SafeAreaView>
   );
 };
@@ -31,11 +42,10 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-
+    backgroundColor: '#fff',
   },
   anim: {
-    width: 300,
-    height: 300,
+    width: 350,
+    height: 350
   }
-
 });

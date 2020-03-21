@@ -11,7 +11,7 @@ import {
 
 import { Icon } from 'react-native-elements';
 
-import icon from '../../assets/icon.png';
+import icon from '../../assets/TreasureChest.png';
 import Banner from '../components/banner';
 import { getFilmes } from '../../serves/api';
 
@@ -31,20 +31,6 @@ export default function Main() {
     console.log(dados)
   });
 
-
-  const data = [
-    "Oh",
-    "baby",
-    "me", "leva", "me", "leva", "que", "o futuro", "me espera",
-    "Oh",
-    "baby",
-    "me", "leva", "me", "leva", "que", "o futuro", "me espera"
-  ]
-
-  // renderItem = ({ item }) => (<View key={item} style={styles.banner}><Text style={{
-  //   color: "white",
-  //   fontSize: 20
-  // }}>{item.img}</Text></View>);
 
   renderItem = ({ item }) => (<Banner key={item} nome={item.nome} url={item.img} />);
 
@@ -79,13 +65,13 @@ export default function Main() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#233739',
+    backgroundColor: '#007245',
     alignItems: 'center',
     justifyContent: 'center',
   },
   icon: {
-    height: 90,
-    width: 180,
+    height: 100,
+    width: 190,
   },
   input: {
     height: 41,
@@ -95,7 +81,7 @@ const styles = StyleSheet.create({
     width: 230,
     borderRadius: 5,
     marginTop: 4,
-    textAlign: "center"
+    textAlign: "center",
 
   },
   header: {
