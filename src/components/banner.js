@@ -2,8 +2,7 @@ import * as React from 'react'
 import{
   View,
   Image,
-  Text,
-  StyleSheet
+  Text
 } from 'react-native';
 
 

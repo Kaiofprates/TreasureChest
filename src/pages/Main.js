@@ -6,36 +6,60 @@ import {
   TextInput,
   StyleSheet,
   ScrollView,
-  SafeAreaView,
+  SafeAreaView
 } from 'react-native';
 
 import { Icon } from 'react-native-elements';
-
+import Options from '../components/optionBanner'
 import icon from '../../assets/TreasureChest.png';
 import Banner from '../components/banner';
-import { getFilmes } from '../../serves/api';
+import { getFilmes, getInfo } from '../../serves/api';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import RBSheet from "react-native-raw-bottom-sheet";
 
 export default function Main() {
 
   const [dados, setdados] = useState();
 
-  useEffect(() => {
+  const [qualit, setQualit] = useState([]);
 
+
+  useEffect(() => {
     async function extrator() {
       const res = await getFilmes();
       setdados(res.data);
-
     }
-
     extrator();
-    console.log(dados)
+    console.log("---SUCESS---")
   });
 
+ //-------------------------
 
-  renderItem = ({ item }) => (<Banner key={item} nome={item.nome} url={item.img} />);
+  async function setInfo(url){
+  await setQualit([]);  
+  const res = await getInfo(url); 
+  setQualit(res.data);
+  console.log(res.data); 
+  }
+
+  //-------------------------
+
+  renderItem = ({ item }) => (
+    <TouchableOpacity 
+    onPress={() => {
+      setInfo(item.url);
+      this.RBSheet.open()
+    }}>
+      <Banner key={item} nome={item.nome} url={item.img} />
+    </TouchableOpacity>
+
+  );
+
+
 
   return (
     <SafeAreaView style={styles.container}>
+
       {/*  ---------- inicio do header ------------- */}
       <View style={styles.header}>
         <Image source={icon} style={styles.icon} />
@@ -51,6 +75,37 @@ export default function Main() {
         </View>
       </View>
       {/*  ---------- fim do header ------------- */}
+
+      { /** ----------------Botton Sheet-------------------- */}
+
+      <RBSheet
+        ref={ref => {
+          this.RBSheet = ref;
+        }}
+
+        height={400}
+        duration={200}
+        customStyles={{
+          container: {
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: "'#007245"
+          }
+        }}
+      >
+        <View containerStyle={{ padding: 0 }}>
+
+          {qualit.map((info) => {
+            return (
+              <Options key={info.url} qualit={info.name} />
+            );
+          })}
+
+        </View>
+      </RBSheet>
+
+      {/* ---------------------------------- */}
+
       <ScrollView style={styles.pelicula}>
         <FlatList
           data={dados}
@@ -106,6 +161,19 @@ const styles = StyleSheet.create({
   },
   pelicula: {
     padding: 9
+  },
+  modalImage: {
+    width: '93%',
+    height: '90%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    textAlign: "center",
+    alignContent: "center",
+    margin: 20
+  },
+  cardModal: {
+    borderRadius: 20,
+    height: 300
   }
 
 });
