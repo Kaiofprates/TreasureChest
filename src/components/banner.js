@@ -28,7 +28,7 @@ const styles  = {
      margin: 10
     },
      banner: {
-     backgroundColor: 'rgba(100, 255, 20, 0.7)',
+     backgroundColor: '#fff',
      height: 250,
      margin: 5,
      width: "100%",

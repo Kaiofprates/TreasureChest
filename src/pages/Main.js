@@ -6,7 +6,8 @@ import {
   TextInput,
   StyleSheet,
   ScrollView,
-  SafeAreaView
+  SafeAreaView, 
+  ActivityIndicator
 } from 'react-native';
 
 import { Icon } from 'react-native-elements';
@@ -20,7 +21,7 @@ import RBSheet from "react-native-raw-bottom-sheet";
 export default function Main() {
 
   const [dados, setdados] = useState();
-
+  const [loading, setLoading] = useState(true)
   const [qualit, setQualit] = useState([]);
 
 
@@ -31,12 +32,12 @@ export default function Main() {
     }
     extrator();
     console.log("---SUCESS---")
-  });
+  },[]);
 
  //-------------------------
 
   async function setInfo(url){
-  await setQualit([]);  
+  await setQualit(false);  
   const res = await getInfo(url); 
   setQualit(res.data);
   console.log(res.data); 
@@ -64,7 +65,7 @@ export default function Main() {
       <View style={styles.header}>
         <Image source={icon} style={styles.icon} />
         <View style={styles.search}>
-          <TextInput placeholder="search" style={styles.input}></TextInput>
+          <TextInput placeholder="Search" placeholderTextColor="#FFF" style={styles.input}></TextInput>
           <Icon
             raised
             name='search'
@@ -83,7 +84,7 @@ export default function Main() {
           this.RBSheet = ref;
         }}
 
-        height={400}
+        height={800}
         duration={200}
         customStyles={{
           container: {
@@ -95,11 +96,9 @@ export default function Main() {
       >
         <View containerStyle={{ padding: 0 }}>
 
-          {qualit.map((info) => {
-            return (
-              <Options key={info.url} qualit={info.name} />
-            );
-          })}
+          {qualit? 
+          qualit.map((info) => {return ( <Options key={info.url} qualit={info.name} /> );}) : 
+          <ActivityIndicator size={60} color="#fff" />}
 
         </View>
       </RBSheet>
@@ -120,7 +119,7 @@ export default function Main() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#007245',
+    backgroundColor: '#007245', 
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -131,12 +130,13 @@ const styles = StyleSheet.create({
   input: {
     height: 41,
     fontSize: 19,
-    backgroundColor: '#25A49A',
+    backgroundColor: '#007245',
     justifyContent: "center",
     width: 230,
-    borderRadius: 5,
+    borderRadius: 15,
     marginTop: 4,
     textAlign: "center",
+    color: 'white'
 
   },
   header: {
@@ -148,7 +148,12 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
+    margin: 5,
+    borderWidth: 3,
+    borderColor: "white",
+    borderStyle: "solid",
+    borderRadius: 30
   },
   banner: {
     backgroundColor: "#3F2992",
