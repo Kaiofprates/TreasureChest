@@ -24,4 +24,30 @@ async function getInfo(url){
     return data
 }
 
-module.exports = {getFilmes,getInfo}
+
+async function searchMovie(movie){
+    const data  = await axios.post('https://leprechaum-scrappy.herokuapp.com/filmes',{
+        url : `http://www.megatorrentshd.org/?s=${movie}`
+    }).then((e)=>{
+        return e.data
+    }).catch((err)=>{
+        return err
+    });
+    return data
+    
+}
+
+
+async function downloadMovie(body){
+    const data  = await axios.post('https://leprechaum-nestjs.herokuapp.com/torrents', body
+    ).then((e)=>{
+        return e.data
+    }).catch((err)=>{
+        return err
+    });
+    return data
+}
+
+
+
+module.exports = {getFilmes,getInfo,searchMovie, downloadMovie}

@@ -6,24 +6,24 @@ import {
   TextInput,
   StyleSheet,
   ScrollView,
-  SafeAreaView, 
+  SafeAreaView,
   ActivityIndicator
 } from 'react-native';
 
 import { Icon } from 'react-native-elements';
 import Options from '../components/optionBanner'
-import icon from '../../assets/TreasureChest.png';
+import icon from '../../assets/Treasure.png';
 import Banner from '../components/banner';
-import { getFilmes, getInfo } from '../../serves/api';
+import { getFilmes, getInfo, searchMovie } from '../../serves/api';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import RBSheet from "react-native-raw-bottom-sheet";
 
 export default function Main() {
 
   const [dados, setdados] = useState();
-  const [loading, setLoading] = useState(true)
+  const [magName, setMagName] = useState(true)
   const [qualit, setQualit] = useState([]);
-
+  const [search, setSearch] = useState('');
 
   useEffect(() => {
     async function extrator() {
@@ -32,25 +32,37 @@ export default function Main() {
     }
     extrator();
     console.log("---SUCESS---")
-  },[]);
+  }, []);
 
- //-------------------------
+  //-------------------------
 
-  async function setInfo(url){
-  await setQualit(false);  
-  const res = await getInfo(url); 
-  setQualit(res.data);
-  console.log(res.data); 
+  async function setInfo(url) {
+    await setQualit(false);
+    const res = await getInfo(url);
+    setQualit(res.data);
+    console.log(res.data);
+  }
+
+  async function query() {
+    console.log('testando ----')
+    try {
+      const res = await searchMovie(search);
+      setdados(res.data);
+      console.log(res.data);
+    } catch (err) {
+      console.log('errouuuuuuu -------');
+    }
   }
 
   //-------------------------
 
   renderItem = ({ item }) => (
-    <TouchableOpacity 
-    onPress={() => {
-      setInfo(item.url);
-      this.RBSheet.open()
-    }}>
+    <TouchableOpacity
+      onPress={() => {
+        setMagName(item.nome);
+        setInfo(item.url);
+        this.RBSheet.open()
+      }}>
       <Banner key={item} nome={item.nome} url={item.img} />
     </TouchableOpacity>
 
@@ -65,14 +77,20 @@ export default function Main() {
       <View style={styles.header}>
         <Image source={icon} style={styles.icon} />
         <View style={styles.search}>
-          <TextInput placeholder="Search" placeholderTextColor="#FFF" style={styles.input}></TextInput>
-          <Icon
-            raised
-            name='search'
-            type='font-awesome'
-            color='#25A49A'
-            size={19}
-            onPress={() => console.log('hello')} />
+          <TextInput onChangeText={setSearch}
+            placeholder="Search" placeholderTextColor="#FFF"
+            style={styles.input}></TextInput>
+          <TouchableOpacity onPress={() => {
+            query();
+          }}>
+            <Icon
+              raised
+              name='search'
+              type='font-awesome'
+              color='#25A49A'
+              size={19}
+            />
+          </TouchableOpacity>
         </View>
       </View>
       {/*  ---------- fim do header ------------- */}
@@ -84,8 +102,9 @@ export default function Main() {
           this.RBSheet = ref;
         }}
 
-        height={800}
+        height={400}
         duration={200}
+
         customStyles={{
           container: {
             justifyContent: "center",
@@ -94,13 +113,17 @@ export default function Main() {
           }
         }}
       >
-        <View containerStyle={{ padding: 0 }}>
+        <ScrollView containerStyle={{ padding: 0 }}>
 
-          {qualit? 
-          qualit.map((info) => {return ( <Options key={info.url} qualit={info.name} /> );}) : 
-          <ActivityIndicator size={60} color="#fff" />}
+          {qualit ?
+            qualit.map((info) => {
+              return (
+                <Options key={info.url} qualit={info.name}  magnet={info.url} name={magName}/>
+              );
+            }) :
+            <ActivityIndicator size={60} color="#fff" />}
 
-        </View>
+        </ScrollView>
       </RBSheet>
 
       {/* ---------------------------------- */}
@@ -119,7 +142,7 @@ export default function Main() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#007245', 
+    backgroundColor: '#171738',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -129,14 +152,14 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 41,
-    fontSize: 19,
-    backgroundColor: '#007245',
+    backgroundColor: '#171738',
     justifyContent: "center",
     width: 230,
     borderRadius: 15,
     marginTop: 4,
     textAlign: "center",
-    color: 'white'
+    color: 'white',
+    fontSize: 19
 
   },
   header: {
@@ -151,7 +174,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     margin: 5,
     borderWidth: 3,
-    borderColor: "white",
+    borderColor: "#3e6b26",
     borderStyle: "solid",
     borderRadius: 30
   },
