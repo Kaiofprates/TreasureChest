@@ -50,7 +50,7 @@ export default function Main() {
       setdados(res.data);
       console.log(res.data);
     } catch (err) {
-      console.log('errouuuuuuu -------');
+      console.log(err);
     }
   }
 

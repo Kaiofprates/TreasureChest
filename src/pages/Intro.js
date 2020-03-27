@@ -1,30 +1,40 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import {
   SafeAreaView,
   StyleSheet,
   Image,
-  View
+  View, Text
 } from 'react-native';
 
 //import Lottie from 'lottie-react-native';
 import leprechaun from '../../assets/leprechaun.gif'
 //import leprechaun from '../../assets/leprechaun.json'
+import { getQuote } from '../../serves/api';
+
 export default function Intro({ navigation }) {
 
-
-useEffect(()=>{
-
-  setInterval(()=>{
-    navigation.navigate('Home')
-  }, 4000)
+  const [quote, setQuote] = useState('Does she talk to yo? Or just answer you?');
 
 
-},[]);
+  useEffect(() => {
+
+    setInterval(()=>{
+      navigation.navigate('Home')
+    }, 4000)
+    async function getRandomQuote() {
+      const res = await getQuote()
+      setQuote(res.data);
+    }
+
+    getRandomQuote();
+
+  }, []);
 
 
-  
 
-  return(
+
+  return (
     <SafeAreaView style={styles.container}>
       {/* <Lottie
         source={leprechaun}
@@ -32,7 +42,15 @@ useEffect(()=>{
         autoPlay
         resizeMode="contain"
       /> */}
-      <Image source={leprechaun}  style={styles.anim}/>
+
+      <View style={styles.circle}>
+        <Image source={leprechaun} style={styles.anim} />
+      </View>
+      <View style={styles.letter}>
+        <Text style={styles.text}>
+          {quote.data}
+        </Text>
+      </View>
     </SafeAreaView>
   );
 };
@@ -42,10 +60,30 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: '#171738',
   },
   anim: {
-    width: 350,
-    height: 350
+    width: 280,
+    height: 280,
+  },
+  circle: {
+    height: 300,
+    width: 300,
+    justifyContent: "center",
+    alignItems: "center",
+    borderColor: "#197278",
+    borderStyle: 'solid',
+    borderWidth: 12,
+    borderRadius: 210,
+    overflow: 'hidden',
+  },
+  letter: {
+    margin: 30,
+    justifyContent: "center"
+  },
+  text: {
+    color: "white",
+    fontSize: 20,
+    fontFamily: 'sans-serif'
   }
 });

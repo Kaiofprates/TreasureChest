@@ -5,7 +5,7 @@ import {
   View,
   Text,
   TouchableOpacity,
-  Modal, StyleSheet, TextInput
+  Modal, StyleSheet, TextInput, Alert
 } from 'react-native'
 
 import {downloadMovie} from '../../serves/api'
@@ -24,12 +24,22 @@ export default function OptionBanner(props) {
       link: props.magnet,
       type: "movie"
     }
-    console.log(body)
     const res  = await downloadMovie(body);
-    if(res.data){
-      alert('Seu Filme será baixado em breve!');
+    if(res.status == 201){
+      Alert.alert(
+        'Donwload Info:',
+        'Your movie will be downloaded soon.',
+        [],
+        {cancelable: true}
+      )
+    } else{
+      Alert.alert(
+        'Donwload Info:',
+        'Something went wrong, try again.',
+        [],
+        {cancelable: true}
+      )
     }
-    console.log(res.data)
   }
 
 
