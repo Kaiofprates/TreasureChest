@@ -2,8 +2,7 @@ import * as React from 'react'
 import{
   View,
   Image,
-  Text,
-  StyleSheet
+  Text
 } from 'react-native';
 
 
@@ -29,7 +28,7 @@ const styles  = {
      margin: 10
     },
      banner: {
-     backgroundColor: 'rgba(70, 20, 20, 0.7)',
+     backgroundColor: '#fff',
      height: 250,
      margin: 5,
      width: "100%",
@@ -43,6 +42,8 @@ const styles  = {
    },
    textBanner:{
      width: 120,
-     margin: 5
+     margin: 5,
+     textSize: 12,
+     color: "white"
    }
  };
