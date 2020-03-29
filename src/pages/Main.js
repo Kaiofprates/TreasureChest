@@ -4,14 +4,14 @@ import {
   Image,
   FlatList,
   TextInput,
-  StyleSheet,
   ScrollView,
   SafeAreaView,
   ActivityIndicator
 } from 'react-native';
 
+import styles from './styles';
 import { Icon } from 'react-native-elements';
-import Options from '../components/optionBanner'
+import Options from '../components/optionBanner/index';
 import icon from '../../assets/Treasure.png';
 import Banner from '../components/banner';
 import { getFilmes, getInfo, searchMovie } from '../../serves/api';
@@ -48,6 +48,7 @@ export default function Main() {
     try {
       const res = await searchMovie(search);
       setdados(res.data);
+      setSearch('');
       console.log(res.data);
     } catch (err) {
       console.log(err);
@@ -77,8 +78,8 @@ export default function Main() {
       <View style={styles.header}>
         <Image source={icon} style={styles.icon} />
         <View style={styles.search}>
-          <TextInput onChangeText={setSearch}
-            placeholder="Search" placeholderTextColor="#FFF"
+          <TextInput onChangeText={setSearch} clearTextOnFocus={true}
+            placeholder="Search" placeholderTextColor="#FFF" value={search}
             style={styles.input}></TextInput>
           <TouchableOpacity onPress={() => {
             query();
@@ -128,80 +129,13 @@ export default function Main() {
 
       {/* ---------------------------------- */}
 
-      <ScrollView style={styles.pelicula}>
         <FlatList
           data={dados}
           renderItem={renderItem}
           numColumns={2}
+          style={styles.pelicula}
         />
-      </ScrollView>
     </SafeAreaView>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#171738',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  icon: {
-    height: 100,
-    width: 190,
-  },
-  input: {
-    height: 41,
-    backgroundColor: '#171738',
-    justifyContent: "center",
-    width: 230,
-    borderRadius: 15,
-    marginTop: 4,
-    textAlign: "center",
-    color: 'white',
-    fontSize: 19
-
-  },
-  header: {
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 40
-  },
-  search: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    margin: 5,
-    borderWidth: 3,
-    borderColor: "#3e6b26",
-    borderStyle: "solid",
-    borderRadius: 30
-  },
-  banner: {
-    backgroundColor: "#3F2992",
-    height: 90,
-    margin: 5,
-    width: 100,
-    borderRadius: 5,
-    justifyContent: "center",
-
-  },
-  pelicula: {
-    padding: 9
-  },
-  modalImage: {
-    width: '93%',
-    height: '90%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    textAlign: "center",
-    alignContent: "center",
-    margin: 20
-  },
-  cardModal: {
-    borderRadius: 20,
-    height: 300
-  }
-
-});

@@ -21,7 +21,7 @@ export default function Intro({ navigation }) {
 
     setInterval(()=>{
       navigation.navigate('Home')
-    }, 4000)
+    }, 5000)
     async function getRandomQuote() {
       const res = await getQuote()
       setQuote(res.data);
